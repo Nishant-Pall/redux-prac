@@ -1,4 +1,4 @@
-import redux from "redux";
+import redux, { combineReducers } from "redux";
 const createStore = redux.createStore;
 
 //action
@@ -24,11 +24,11 @@ const buyIceCream = () => {
 //numOfIceCreams: 20,
 //};
 
-const initalCakeState = {
+const initialCakeState = {
     numOfCakes: 10,
 };
 
-const initalIceCreamState = {
+const initialIceCreamState = {
     numOfIceCreams: 20,
 };
 //const reducer = (state = initialState, action) => {
@@ -74,9 +74,17 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
 
 // Create store, pass in reducer
 // which controls how state transition happens
-const store = createStore(reducer);
+// Combine two reducers
+const rootReducer = combineReducers({
+    cake: cakeReducer,
+    iceCream: iceCreamReducer,
+});
+const store = createStore(rootReducer);
 // setup listener, anytime state updates, we log it to the console
 const unsubscribe = store.subscribe(() => console.log(store.getState()));
+// dispatch action creators to the store
+// when we dispatch the action, both reducers get that
+// one ignores it and other does the work
 store.dispatch(buyCake());
 store.dispatch(buyCake());
 store.dispatch(buyCake());
